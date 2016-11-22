@@ -1,90 +1,93 @@
-DROP TABLE IF EXISTS "log" CASCADE;
-DROP TABLE IF EXISTS "client" CASCADE;
-DROP TABLE IF EXISTS "schedule" CASCADE;
-DROP TABLE IF EXISTS "match" CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS "team" CASCADE;
+DROP TABLE IF EXISTS "competition" CASCADE;
+DROP TABLE IF EXISTS "team_invitation" CASCADE;
 
-DROP TYPE IF EXISTS "log_severity_enum" CASCADE;
-DROP TYPE IF EXISTS "schedule_type_enum" CASCADE;
-DROP TYPE IF EXISTS "client_language_enum" CASCADE;
-DROP TYPE IF EXISTS "match_status_enum" CASCADE;
-DROP TYPE IF EXISTS "schedule_status_enum" CASCADE;
+DROP TYPE IF EXISTS "shirt_size_enum" CASCADE;
+DROP TYPE IF EXISTS "pizza_choice_enum" CASCADE;
+DROP TYPE IF EXISTS "prog_lang_enum" CASCADE;
 
-CREATE TYPE client_language_enum AS ENUM (
-    'cpp', 'python', 'csharp', 'javascript', 'java'
-);
+CREATE TYPE shirt_size_enum AS ENUM ('s', 'm', 'l', 'xl', 'xxl');
+CREATE TYPE pizza_choice_enum AS ENUM ('cheese', 'pepperoni', 'bacon', 'chicken');
+CREATE TYPE prog_lang_enum AS ENUM ('cpp', 'python', 'csharp', 'javascript', 'java', 'lua');
 
-CREATE TYPE log_severity_enum AS ENUM (
-    'debug', 'info', 'warn', 'error'
-);
-
-CREATE TYPE schedule_type_enum AS ENUM (
-    'random', 'single_elimination', 'triple_elimination', 'swiss', 'test'
-);
-CREATE TYPE  schedule_status_enum AS ENUM(
-  'running','stopped'
-);
-
-CREATE TYPE match_status_enum AS ENUM (
-    'playing', 'scheduled', 'sending', 'finished', 'failed'
-);
-
-CREATE TABLE "log" (
+CREATE TABLE "user" (
     id serial NOT NULL PRIMARY KEY,
-    message character varying NOT NULL,
-    location character varying,
-    severity log_severity_enum NOT NULL DEFAULT 'debug',
+    name varchar(64) UNIQUE,
+    full_name varchar(64),
+    email varchar(64) NOT NULL UNIQUE,
+
+    is_dev boolean NOT NULL DEFAULT false,
+    is_student boolean NOT NULL DEFAULT true,
+    is_sponsor boolean NOT NULL DEFAULT false,
+
+    shirt_size shirt_size_enum,
+    pizza_choice pizza_choice_enum,
+    is_prev_competitor boolean NOT NULL DEFAULT false,
 
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "client" (
+CREATE TABLE "competition" (
     id serial NOT NULL PRIMARY KEY,
-    name character varying NOT NULL UNIQUE,
-    repo character varying,
-    hash character varying,
+    name varchar(64) UNIQUE,
+    description varchar(128) NOT NULL DEFAULT 'Competition description here.',
 
-    language client_language_enum,
+    slogan varchar(64) NOT NULL DEFAULT 'Competition slogan here.',
+    logo bytea,
 
-    needs_build boolean NOT NULL DEFAULT false,
-    build_success boolean,
-    attempt_time timestamp,
-    success_time timestamp,
-    failure_time timestamp,
+    start_time timestamp,
+    end_time timestamp,
+
+    is_open boolean NOT NULL DEFAULT false,
+    is_running boolean NOT NULL DEFAULT false,
+
+    min_team_size integer NOT NULL DEFAULT 2,
+    max_team_size integer NOT NULL DEFAULT 2,
 
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "schedule" (
+CREATE TABLE "team" (
     id serial NOT NULL PRIMARY KEY,
-    type schedule_type_enum NOT NULL,
-    status schedule_status_enum NOT NULL DEFAULT 'stopped',
+    name varchar(64) NOT NULL UNIQUE,
+
+    gitlab_id integer,
+
+    members integer[],
+    prog_lang prog_lang_enum,
+
+    competition integer REFERENCES "competition",
+
+    id_paid boolean NOT NULL DEFAULT false,
+    paid_time timestamp,
+    is_eligible boolean DEFAULT true,
+
+    is_embargoed boolean DEFAULT true,
+    embargo_reason varchar(128) DEFAULT 'Initial build not performed.',
 
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "match" (
+CREATE TABLE "team_invitation" (
     id serial NOT NULL PRIMARY KEY,
-
-    clients integer[] NOT NULL,
-    reason character varying,
-
-    status match_status_enum NOT NULL DEFAULT 'scheduled',
-    gamelog integer UNIQUE,
+    team integer NOT NULL REFERENCES "team",
+    sender integer NOT NULL REFERENCES "user",
+    receiver integer NOT NULL REFERENCES "user",
 
     created_time timestamp NOT NULL DEFAULT now(),
-    modified_time timestamp NOT NULL DEFAULT now(),
-    schedule_id integer NOT NULL REFERENCES schedule(id)
+    modified_time timestamp NOT NULL DEFAULT now()
 );
 
-DELETE FROM "log";
-DELETE FROM "client";
-DELETE FROM "schedule";
-DELETE FROM "match";
+DELETE FROM "user";
+DELETE FROM "team";
+DELETE FROM "competition";
+DELETE FROM "team_invitation";
 
-ALTER SEQUENCE "log_id_seq" RESTART WITH 1;
-ALTER SEQUENCE "client_id_seq" RESTART WITH 1;
-ALTER SEQUENCE "match_id_seq" RESTART WITH 1;
-ALTER SEQUENCE "schedule_id_seq" RESTART WITH 1;
+ALTER SEQUENCE "user_id_seq" RESTART WITH 1;
+ALTER SEQUENCE "team_id_seq" RESTART WITH 1;
+ALTER SEQUENCE "competition_id_seq" RESTART WITH 1;
+ALTER SEQUENCE "team_invitation_id_seq" RESTART WITH 1;
