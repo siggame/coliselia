@@ -1,4 +1,5 @@
 let express = require("express");
+let config = require("config");
 let knex = require("knex")({
     client: "pg",
     connection: {

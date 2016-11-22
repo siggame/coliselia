@@ -1,5 +1,6 @@
-var express = require("express");
-var knex = require("knex")({
+let express = require("express");
+let config = require("config");
+let knex = require("knex")({
     client: "pg",
     connection: {
         host: config.database.host,
@@ -9,7 +10,7 @@ var knex = require("knex")({
     }
 });
 
-var router = express.Router();
+let router = express.Router();
 
 router.get("/", (req, res) => {
 
@@ -34,9 +35,8 @@ router.post("/:id/update/", (req, res) => {
 });
 
 router.post("/api/v2/match/", function(req, res){
-    req.body
 
-    knex("match").insert(req.body);
+    //knex("match").insert(req.body);
 });
 
 module.exports = router;
