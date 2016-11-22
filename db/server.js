@@ -6,11 +6,13 @@ let bodyParser = require("body-parser");
 
 // individual apis
 let matchApi = require("./match_api");
+let gameStatsApi = require("./game_stats_api");
 
 let app = express();
 
 // use apis
 app.use("/api/v2/match/", matchApi);
+app.use("/api/v2/game_stats/", gameStatsApi);
 
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded({ extended: true }) );
