@@ -1,0 +1,18 @@
+version: "2"
+
+environment:
+  DB_USER: "coliselia"
+  DB_PASS: "siggame"
+  DB_DB: "coliselia"
+  DB_PORT: "5432"
+
+services:
+  db:
+    build: db/
+    dockerfile: db.dockerfile
+    ports:
+    - "${DB_PORT}:5432"
+  dbapi:
+    build: db/
+    dockerfile: dbapi.dockerfile
+    - "${DB_PORT}:5432"
