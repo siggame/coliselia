@@ -9,10 +9,7 @@ environment:
 services:
   db:
     build: db/
-    dockerfile: db.dockerfile
-    ports:
-    - "${DB_PORT}:5432"
+    ports: "5432:5432"
   dbapi:
-    build: db/
-    dockerfile: dbapi.dockerfile
-    - "${DB_PORT}:5432"
+    build: dbapi/
+

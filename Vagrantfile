@@ -23,6 +23,11 @@ Vagrant.configure("2") do |config|
             apt-get update
             apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual docker-engine
             usermod -aG docker ubuntu
+
+        echo "#### Installing Kubernetes..."
+            wget https://storage.googleapis.com/kubernetes-release/release/v1.4.4/bin/linux/amd64/kubectl
+            chmod +x kubectl
+            mv kubectl /usr/local/bin/kubectl
     SHELL
 
     # User configuration
