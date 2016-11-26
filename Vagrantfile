@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     # Root configuration
     config.vm.provision "shell", inline: <<-SHELL
         apt-get update
-        apt-get install -y make gcc tmux vim
+        apt-get install -y make gcc tmux vim python python-pip python2 python2-pip
 
         echo "#### Installing docker..."
             apt-get install -y apt-transport-https ca-certificates
@@ -23,6 +23,10 @@ Vagrant.configure("2") do |config|
             apt-get update
             apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual docker-engine
             usermod -aG docker ubuntu
+
+        echo "#### Installing docker-compose..."
+            pip install docker-compose
+
 
         echo "#### Installing Kubernetes..."
             wget https://storage.googleapis.com/kubernetes-release/release/v1.4.4/bin/linux/amd64/kubectl

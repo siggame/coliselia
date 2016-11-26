@@ -1,15 +1,25 @@
 version: "2"
 
-environment:
-  DB_USER: "coliselia"
-  DB_PASS: "siggame"
-  DB_DB: "coliselia"
-  DB_PORT: "5432"
-
 services:
   db:
+    environment:
+      DB_USER: "coliselia"
+      DB_PASS: "siggame"
+      DB_NAME: "coliselia"
+      DB_PORT: "5432"
     build: db/
-    ports: "5432:5432"
+    ports:
+    - "5432:5432"
+
   dbapi:
+    environment:
+      DB_USER: "coliselia"
+      DB_PASS: "siggame"
+      DB_NAME: "coliselia"
+      DB_PORT: "5432"
+      DBAPI_PORT: "3000"
     build: dbapi/
+    ports:
+    - "3000:3000"
+
 

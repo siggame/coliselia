@@ -1,7 +1,6 @@
 let express         = require("express");
 let winston         = require("winston");
 let bodyParser      = require("body-parser");
-require("dotenv").config({path: "../.env"});
 
 let knex = require("knex")({
     client: "pg",
@@ -9,7 +8,7 @@ let knex = require("knex")({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
-        database: process.env.DB_DB
+        database: process.env.DB_NAME,
     }
 });
 
@@ -36,10 +35,10 @@ app.use((req, res, next) => {
 });
 
 // use apis
-app.use("/", matchApi);
-app.use("/", gameStatsApi);
+app.use("/api/v2/match/", matchApi);
+app.use("/api/v2/game_stats/", gameStatsApi);
 app.use("/api/v2/user/", userApi);
 
-app.listen(process.env.DB_API_PORT, () => {
-    winston.info(`Listening on port ${process.env.DB_API_PORT}`);
+app.listen(process.env.DBAPI_PORT, () => {
+    winston.info(`Listening on port ${process.env.DBAPI_PORT}`);
 });
