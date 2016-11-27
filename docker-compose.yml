@@ -1,0 +1,36 @@
+version: "2"
+
+services:
+  db:
+    environment:
+      POSTGRES_USER: "coliselia"
+      POSTGRES_PASSWORD: "siggame"
+      POSTGRES_DB: "coliselia"
+    build: db/
+    ports:
+    - "5432:5432"
+
+  dbapi:
+    environment:
+      DB_USER: "coliselia"
+      DB_PASS: "siggame"
+      DB_NAME: "coliselia"
+      DB_HOST: "coliselia_db_1"
+      DB_PORT: "5432"
+    build: dbapi/
+    ports:
+    - "3000:3000"
+
+  gitlab:
+    build: gitlab/
+    ports:
+    - "8080:80"
+    - "8443:443"
+    - "2222:22"
+
+  gitlab-runner:
+    build: gitlab-runner/
+
+
+
+
