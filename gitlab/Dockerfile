@@ -1,6 +1,8 @@
-FROM library/postgres:9.4
+FROM library/gitlab/gitlab-ce:latest
 MAINTAINER siggame
 
-ADD init.sql /docker-entrypoint-initdb.d/
+VOLUME /etc/gitlab
+VOLUME /var/log/gitlab
+VOLUME /var/opt/gitlab
 
-EXPOSE 5432
+EXPOSE 22 30 443
