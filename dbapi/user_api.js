@@ -6,11 +6,18 @@ let knex = require("knex")({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
-        database: process.env.DB_DB
+        database: process.env.DB_NAME
     }
 });
 
 let router = express.Router();
+
+router.get("/", (req, res) => {
+    knex("user").asCallback((err, rows)=>{
+        if(err) return res.status(400).send(err);
+        res.status(200).send(rows);
+    });
+});
 
 router.get("/:id", (req, res) => {
     try { req.params.id = parseInt(req.params.id) }

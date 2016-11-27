@@ -1,6 +1,7 @@
 let express         = require("express");
 let winston         = require("winston");
 let bodyParser      = require("body-parser");
+let config          = require("config");
 
 let knex = require("knex")({
     client: "pg",
@@ -11,7 +12,6 @@ let knex = require("knex")({
         database: process.env.DB_NAME,
     }
 });
-
 
 // individual apis
 let matchApi        = require("./match_api");
@@ -39,6 +39,6 @@ app.use("/api/v2/match/", matchApi);
 app.use("/api/v2/game_stats/", gameStatsApi);
 app.use("/api/v2/user/", userApi);
 
-app.listen(process.env.DBAPI_PORT, () => {
-    winston.info(`Listening on port ${process.env.DBAPI_PORT}`);
+app.listen(config.port, () => {
+    winston.info(`Listening on port ${config.port}`);
 });
