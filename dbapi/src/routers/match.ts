@@ -10,4 +10,4 @@ router.post("/api/v2/match/", function(req, res){
     res.status(400).send("UNIMPLEMENTED");
 });
 
-export { router as MatchApiRouter };
+export { router as MatchRouter };

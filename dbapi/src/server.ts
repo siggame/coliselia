@@ -2,11 +2,7 @@ import * as bodyParser from "body-parser";
 import * as config from "config";
 import * as express from "express";
 import * as winston from "winston";
-
-// individual apis
-import { GameStatsApiRouter } from "./game_stats_api";
-import { MatchApiRouter } from "./match_api";
-import { UserApiRouter } from "./user_api";
+import * as ApiRouters from "./routers"
 
 let app = express();
 
@@ -25,9 +21,9 @@ app.use((req, res, next) => {
 });
 
 // use apis
-app.use("/api/v2/match/", MatchApiRouter);
-app.use("/api/v2/game_stats/", GameStatsApiRouter);
-app.use("/api/v2/user/", UserApiRouter);
+app.use("/api/v2/match/", ApiRouters.Match);
+app.use("/api/v2/game_stats/", ApiRouters.GameStats);
+app.use("/api/v2/user/", ApiRouters.User);
 
 const config_port = config.get("port");
 

@@ -4,7 +4,9 @@ MAINTAINER siggame
 ADD . dbapi
 WORKDIR dbapi
 
-RUN npm install
+RUN [ -d node_modules ]
+RUN [ -d bin ]
+
 
 CMD ["npm", "start"]
 

@@ -6,4 +6,4 @@ router.get("/", (req, res) => {
     res.status(400).send("UNIMPLEMENTED");
 });
 
-export { router as GameStatsApiRouter };
+export { router as GameStatsRouter };

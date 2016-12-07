@@ -21,15 +21,15 @@ services:
     ports:
     - "3000:3000"
 
-  gitlab:
-    build: gitlab/
-    ports:
-    - "8080:80"
-    - "8443:443"
-    - "2222:22"
-
-  gitlab-runner:
-    build: gitlab-runner/
+#  gitlab:
+#    build: gitlab/
+#    ports:
+#    - "8080:80"
+#    - "8443:443"
+#    - "2222:22"
+#
+#  gitlab-runner:
+#    build: gitlab-runner/
 
 
 
