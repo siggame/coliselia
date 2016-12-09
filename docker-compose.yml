@@ -15,21 +15,21 @@ services:
       DB_USER: "coliselia"
       DB_PASS: "siggame"
       DB_NAME: "coliselia"
-      DB_HOST: "coliselia_db_1"
+      DB_HOST: "db"
       DB_PORT: "5432"
     build: dbapi/
     ports:
     - "3000:3000"
 
-  gitlab:
-    build: gitlab/
-    ports:
-    - "8080:80"
-    - "8443:443"
-    - "2222:22"
-
-  gitlab-runner:
-    build: gitlab-runner/
+#  gitlab:
+#    build: gitlab/
+#    ports:
+#    - "8080:80"
+#    - "8443:443"
+#    - "2222:22"
+#
+#  gitlab-runner:
+#    build: gitlab-runner/
 
 
 
