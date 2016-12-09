@@ -1,4 +1,22 @@
 # coliselia
+
+### Setup coliselia
+1) Install Docker - https://docs.docker.com/engine/installation/linux/ubuntulinux/  
+```curl -sSL https://get.docker.com/ | sh```  
+ 
+2) Install Docker Compose - https://docs.docker.com/compose/install/  
+`pip install docker-compose`  
+
+3) Run `npm install` on each service using installAll script  
+`./installAll.sh`  
+
+### Run coliselia  
+4) Build images  
+`docker-compose build`  
+
+5) Run images  
+`docker-compose up`    
+
 Common components &amp; services between ophelia and colisee; note: repo name subject to change
 
 ![ophelia & colisee interactions](https://docs.google.com/drawings/d/101-QUMbFKBXXyhxuEFta0f9ZmxD309IAI1K4JHHEH4c/pub?w=960&h=720)
