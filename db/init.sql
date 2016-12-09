@@ -88,7 +88,7 @@ CREATE TABLE "team_invitation" (
 CREATE TABLE "game" (
     id serial NOT NULL PRIMARY KEY,
     teams integer[] NOT NULL,
-    competition integer NOT NULL REFERENCES "competition"
+    competition integer NOT NULL REFERENCES "competition",
 
     status game_status_enum NOT NULL DEFAULT 'scheduled',
 
