@@ -11,19 +11,21 @@ CREATE TYPE shirt_size_enum AS ENUM ('s', 'm', 'l', 'xl', 'xxl');
 CREATE TYPE pizza_choice_enum AS ENUM ('cheese', 'pepperoni', 'bacon', 'chicken');
 CREATE TYPE prog_lang_enum AS ENUM ('cpp', 'python', 'csharp', 'javascript', 'java', 'lua');
 
+CREATE TYPE game_status_enum as ENUM ('scheduled', 'playing', 'finished');
+
 CREATE TABLE "user" (
     id serial NOT NULL PRIMARY KEY,
-    name varchar(64) UNIQUE,
+    name varchar(64) NOT NULL UNIQUE,
     full_name varchar(64),
     email varchar(64) NOT NULL UNIQUE,
 
     is_dev boolean NOT NULL DEFAULT false,
     is_student boolean NOT NULL DEFAULT true,
     is_sponsor boolean NOT NULL DEFAULT false,
+    is_prev_competitor boolean NOT NULL DEFAULT false,
 
     shirt_size shirt_size_enum,
     pizza_choice pizza_choice_enum,
-    is_prev_competitor boolean NOT NULL DEFAULT false,
 
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
@@ -63,10 +65,11 @@ CREATE TABLE "team" (
 
     id_paid boolean NOT NULL DEFAULT false,
     paid_time timestamp,
-    is_eligible boolean DEFAULT true,
+    is_eligible boolean NOT NULL DEFAULT true,
 
-    is_embargoed boolean DEFAULT true,
+    is_embargoed boolean NOT NULL DEFAULT true,
     embargo_reason varchar(128) DEFAULT 'Initial build not performed.',
+    last_embargoed_time timestamp NOT NULL DEFAULT now(),
 
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
@@ -77,6 +80,24 @@ CREATE TABLE "team_invitation" (
     team integer NOT NULL REFERENCES "team",
     sender integer NOT NULL REFERENCES "user",
     receiver integer NOT NULL REFERENCES "user",
+
+    created_time timestamp NOT NULL DEFAULT now(),
+    modified_time timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "game" (
+    id serial NOT NULL PRIMARY KEY,
+    teams integer[] NOT NULL,
+    competition integer NOT NULL REFERENCES "competition"
+
+    status game_status_enum NOT NULL DEFAULT 'scheduled',
+
+    winners integer[],
+    win_reasons varchar(64)[],
+    losers integer[],
+    lose_reasons varchar(64)[],
+
+    bytea gamelog,
 
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
