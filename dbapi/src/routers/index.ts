@@ -1,9 +1,3 @@
-import { UserRouter } from "./user";
-import { MatchRouter } from "./match";
-import { GameStatsRouter } from "./game_stats"
+import * as api from './api';
 
-export {
-    UserRouter as User,
-    MatchRouter as Match,
-    GameStatsRouter as GameStats
-};
+export { api }
