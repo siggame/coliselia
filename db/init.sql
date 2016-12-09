@@ -99,7 +99,7 @@ CREATE TABLE "game" (
     losers integer[],
     lose_reasons varchar(64)[],
 
-    bytea gamelog,
+    gamelog bytea,
 
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
