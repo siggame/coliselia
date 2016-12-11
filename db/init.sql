@@ -108,16 +108,16 @@ CREATE TABLE "game" (
 CREATE TABLE "schedule" (
     id serial NOT NULL PRIMARY KEY,
     
-    type schedule_type_enum NOT NULL DEFAULT 'random',
+    type schedule_type_enum NOT NULL,
     
-    include_all boolean NOT NULL DEFAULT true,
+    include_all boolean NOT NULL DEFAULT false,
     include_alum boolean NOT NULL DEFAULT false,
     include_dev boolean NOT NULL DEFAULT false,
     include_eligible boolean NOT NULL DEFAULT true,
     include_sponsor boolean NOT NULL DEFAULT false,
     
-    data json NOT NULL,
-    result json NOT NULL,
+    data json,
+    result json,
     
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
