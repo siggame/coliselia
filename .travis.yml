@@ -14,4 +14,4 @@ before_script:
 
 # Build steps
 script:
-  - ./test
+  - ./test.sh
