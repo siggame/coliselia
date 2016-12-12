@@ -5,6 +5,7 @@
   "main": "bin/server.js",
   "scripts": {
     "start": "node bin/server.js",
+    "test": "echo 'TEST GO HERE'",
     "predocs": "npm run compile || true",
     "docs": "npm run docs:src && npm run docs:api",
     "docs:src": "jsdoc bin/ --destination docs/src/",
@@ -12,6 +13,8 @@
     "precompile": "mkdir -p bin",
     "compile": "tsc",
     "watch:compile": "watch 'npm run compile' src/",
+    "setup": "npm-run-all setup:*",
+    "setup:compile": "npm run compile || true",
     "clean": "rm -rf bin/ node_modules/"
   },
   "repository": {
@@ -27,6 +30,7 @@
   "devDependencies": {
     "apidoc": "^0.16.1",
     "jsdoc": "^3.4.3",
+    "npm-run-all": "^3.1.2",
     "tslint": "^4.0.2",
     "typescript": "^2.0.10",
     "watch": "^1.0.1"
