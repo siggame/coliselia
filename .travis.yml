@@ -1,0 +1,17 @@
+# Use containers
+sudo: required
+
+language: node_js
+  
+node_js:
+  - "v6.9.0"
+  
+services:
+  - docker
+
+before_script:
+  - ./installAll.sh
+
+# Build steps
+script:
+  - ./test
