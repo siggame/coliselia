@@ -11,6 +11,7 @@ services:
 
 before_script:
   - ./installAll.sh
+  - ./setupAll.sh
 
 # Build steps
 script:
