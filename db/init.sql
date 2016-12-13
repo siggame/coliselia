@@ -2,16 +2,18 @@ DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS "team" CASCADE;
 DROP TABLE IF EXISTS "competition" CASCADE;
 DROP TABLE IF EXISTS "team_invitation" CASCADE;
+DROP TABLE IF EXISTS "schedule" CASCADE;
 
 DROP TYPE IF EXISTS "shirt_size_enum" CASCADE;
 DROP TYPE IF EXISTS "pizza_choice_enum" CASCADE;
 DROP TYPE IF EXISTS "prog_lang_enum" CASCADE;
+DROP TYPE IF EXISTS "schedule_type_enum" CASCADE;
 
 CREATE TYPE shirt_size_enum AS ENUM ('s', 'm', 'l', 'xl', 'xxl');
 CREATE TYPE pizza_choice_enum AS ENUM ('cheese', 'pepperoni', 'bacon', 'chicken');
 CREATE TYPE prog_lang_enum AS ENUM ('cpp', 'python', 'csharp', 'javascript', 'java', 'lua');
-
 CREATE TYPE game_status_enum as ENUM ('scheduled', 'playing', 'finished');
+CREATE TYPE schedule_type_enum as ENUM ('random', 'single-elim', 'triple-elim', 'swiss');
 
 CREATE TABLE "user" (
     id serial NOT NULL PRIMARY KEY,
@@ -97,8 +99,26 @@ CREATE TABLE "game" (
     losers integer[],
     lose_reasons varchar(64)[],
 
-    bytea gamelog,
+    gamelog bytea,
 
+    created_time timestamp NOT NULL DEFAULT now(),
+    modified_time timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "schedule" (
+    id serial NOT NULL PRIMARY KEY,
+    
+    type schedule_type_enum NOT NULL,
+    
+    include_all boolean NOT NULL DEFAULT false,
+    include_alum boolean NOT NULL DEFAULT false,
+    include_dev boolean NOT NULL DEFAULT false,
+    include_eligible boolean NOT NULL DEFAULT true,
+    include_sponsor boolean NOT NULL DEFAULT false,
+    
+    data json,
+    result json,
+    
     created_time timestamp NOT NULL DEFAULT now(),
     modified_time timestamp NOT NULL DEFAULT now()
 );
@@ -107,8 +127,10 @@ DELETE FROM "user";
 DELETE FROM "team";
 DELETE FROM "competition";
 DELETE FROM "team_invitation";
+DELETE FROM "schedule";
 
 ALTER SEQUENCE "user_id_seq" RESTART WITH 1;
 ALTER SEQUENCE "team_id_seq" RESTART WITH 1;
 ALTER SEQUENCE "competition_id_seq" RESTART WITH 1;
 ALTER SEQUENCE "team_invitation_id_seq" RESTART WITH 1;
+ALTER SEQUENCE "schedule_id_seq" RESTART WITH 1;

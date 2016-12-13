@@ -1,5 +1,7 @@
 # coliselia
 
+[![Build Status](https://travis-ci.org/siggame/coliselia.svg?branch=master)](https://travis-ci.org/siggame/coliselia) 
+
 ### Setup coliselia
 1) Install Docker - https://docs.docker.com/engine/installation/linux/ubuntulinux/  
 ```curl -sSL https://get.docker.com/ | sh```  
