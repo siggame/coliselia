@@ -9,7 +9,7 @@ services:
       POSTGRES_PORT: "5432"
     build: db/
     ports:
-    - "5432:5432"
+    - "5400:5432"
 
   dbapi:
     environment:

@@ -112,7 +112,7 @@ router.post('/', (req, res) => {
 
     knex('user').insert(req.body, '*').then((user) => {
         if (user.length !== 1) return res.status(404).send({ error: 'User was not created' });
-        res.status(200).send(user[0]);
+        res.status(201).send(user[0]);
     }).catch((err) => {
         res.status(400).send(err);
     });

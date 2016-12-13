@@ -28,3 +28,5 @@ app.use('/api/v2/team/', routers.api.team);
 app.listen(config.get('port'), () => {
     winston.info(`Listening on port ${config.get('port')}`);
 });
+
+export { app as server };

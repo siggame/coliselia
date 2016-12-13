@@ -2,20 +2,27 @@
   "name": "dbapi",
   "version": "1.0.0",
   "description": "Database Interactions API for Coliselia",
-  "main": "bin/server.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node bin/server.js",
-    "test": "echo 'TEST GO HERE'",
+    "start": "node src/server.js",
+    "test": "mocha --colors test/",
+
     "predocs": "npm run compile || true",
     "docs": "npm run docs:src && npm run docs:api",
-    "docs:src": "jsdoc bin/ --destination docs/src/",
-    "docs:api": "apidoc --input bin/ --output docs/api/",
-    "precompile": "mkdir -p bin",
-    "compile": "tsc",
-    "watch:compile": "watch 'npm run compile' src/",
+    "docs:src": "jsdoc src/ --destination docs/src/",
+    "docs:api": "apidoc --input src/ --output docs/api/",
+
+    "compile": "npm-run-all compile:*",
+    "compile:src": "tsc --project src",
+    "compile:test": "tsc --project test",
+
+    "watch:compile:src": "watch 'npm run compile:src' src/",
+    "watch:compile:test": "watch 'npm run compile:test' test/",
+
+    "presetup": "npm run clean && npm install",
     "setup": "npm-run-all setup:*",
-    "setup:compile": "npm run compile || true",
-    "clean": "rm -rf bin/ node_modules/"
+    "setup:compile": "npm run compile",
+    "clean": "rm -rf node_modules/"
   },
   "repository": {
     "type": "git",
@@ -28,9 +35,16 @@
   },
   "homepage": "https://github.com/siggame/coliselia#readme",
   "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/chai-http": "0.0.29",
+    "@types/mocha": "^2.2.33",
     "apidoc": "^0.16.1",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "jsdoc": "^3.4.3",
+    "mocha": "^3.2.0",
     "npm-run-all": "^3.1.2",
+    "should": "^11.1.2",
     "tslint": "^4.0.2",
     "typescript": "^2.0.10",
     "watch": "^1.0.1"
