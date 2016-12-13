@@ -19,6 +19,7 @@ let knex = Knex({
     },
 });
 
+// save any newly created clients so they can be used for tests later
 let createdUserIds = [];
 
 describe('User API', function() {
