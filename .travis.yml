@@ -10,9 +10,11 @@ services:
   - docker
 
 before_script:
-  - ./installAll.sh
   - ./setupAll.sh
 
 # Build steps
 script:
-  - ./test.sh
+  - ./test.sh travis-compose.yml
+
+after_failure:
+  - docker-compose --file travis-compose.yml logs

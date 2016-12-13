@@ -1,12 +1,10 @@
-FROM library/node:latest
+FROM library/node:6.9
 MAINTAINER siggame
 
 ADD . dbapi
 WORKDIR dbapi
 
 RUN [ -d node_modules ]
-RUN [ -d bin ]
-
 
 CMD ["npm", "start"]
 

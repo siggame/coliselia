@@ -29,3 +29,5 @@ app.use('/api/v2/schedule', routers.api.schedule);
 app.listen(config.get('port'), () => {
     winston.info(`Listening on port ${config.get('port')}`);
 });
+
+export { app as server };
