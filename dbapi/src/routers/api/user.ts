@@ -110,6 +110,8 @@ router.post('/', (req, res) => {
         return res.status(400).send({ error: result.errors[0] });
     }
 
+    //TODO: create user on gitlab
+
     knex('user').insert(req.body, '*').then((user) => {
         if (user.length !== 1) return res.status(404).send({ error: 'User was not created' });
         res.status(201).send(user[0]);
@@ -136,6 +138,8 @@ router.post('/:id', (req, res) => {
         return res.status(400).send({ error: result.errors[0] });
     }
 
+    //TODO: update gitlab if needed
+
     req.body['modified_time'] = 'now()';
 
     knex('user').where(req.params).update(req.body, '*').then((user) => {
@@ -145,5 +149,7 @@ router.post('/:id', (req, res) => {
         res.status(400).send(err);
     });
 });
+
+//TODO: Add user deletion
 
 export { router as user };
