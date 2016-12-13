@@ -8,7 +8,7 @@ docker-compose --file ${YML} build
 docker-compose --file ${YML} up -d
 
 while ! docker-compose --file ${YML} exec db psql \
-    --username=postgres -c 'SELECT 1'; do
+    coliselia --username=postgres -c 'SELECT 1'; do
   echo 'Waiting for postgres...'
   sleep 1;
 done;

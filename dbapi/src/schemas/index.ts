@@ -1,7 +1,9 @@
 import * as user from './user';
 import * as team from './team';
+import * as schedule from './schedule';
 
 export {
-    user,
-    team
+    schedule,
+    team,
+    user
 };
