@@ -7,8 +7,8 @@ import * as routers from './routers';
 
 let app = express();
 
-app.use( bodyParser.urlencoded({ extended: true }) );
-app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -24,6 +24,7 @@ app.use((req, res, next) => {
 // use apis
 app.use('/api/v2/user/', routers.api.user);
 app.use('/api/v2/team/', routers.api.team);
+app.use('/api/v2/schedule', routers.api.schedule);
 
 app.listen(config.get('port'), () => {
     winston.info(`Listening on port ${config.get('port')}`);

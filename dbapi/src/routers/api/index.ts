@@ -1,4 +1,5 @@
 import { user } from './user';
 import { team } from './team';
+import { schedule } from './schedule';
 
-export { user, team };
+export { schedule, team, user };
