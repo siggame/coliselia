@@ -34,10 +34,27 @@ router.get('/', (req, res) => {
     if (result.errors.length > 0) {
         return res.status(400).send({ error: result.errors[0] });
     }
+    let sql = knex('team');
 
-    knex('team').where(req.query).then((teams) => {
-        res.status(200).send(teams);
-    }).catch((err) => {
+    for(let key of ['id', 'name', 'gitlab_id', 'prog_lang', 'competition']) {
+        if(req.query.hasOwnProperty(key)) {
+            if(_.isArray(req.query[key])) sql = sql.whereIn(key, req.query[key]);
+            else sql = sql.where(key, req.query[key]);
+        }
+    }
+
+    for(let key of ['is_paid', 'is_eligible', 'is_embargoed']) {
+        sql = sql.where(key, req.query[key]);
+    }
+
+    // limit & offset
+    if(req.query.hasOwnProperty('limit'))   sql = sql.limit(req.query['limit']);
+    if(req.query.hasOwnProperty('offset'))  sql = sql.offset(req.query['offset']);
+
+    sql.then((rows) => {
+        res.status(200).send(rows);
+    })
+    .catch((err)=> {
         res.status(400).send(err);
     });
 });

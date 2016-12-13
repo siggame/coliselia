@@ -37,11 +37,43 @@ router.get('/', (req, res) => {
         return res.status(400).send({ error: result.errors[0] });
     }
 
-    knex('user').where(req.query).then((user) => {
-        res.status(200).send(user);
-    }).catch((err) => {
+    let sql = knex('user');
+
+    for(let key of ['id', 'name', 'full_name', 'email']) {
+        if(req.query.hasOwnProperty(key)) {
+            if(_.isArray(req.query[key])) sql = sql.whereIn(key, req.query[key]);
+            else sql = sql.where(key, req.query[key]);
+        }
+    }
+
+    for(let key of ['is_dev', 'is_student', 'is_sponsor', 'is_prev_competitor']) {
+        sql = sql.where(key, req.query[key]);
+    }
+
+    // created & modified times
+    if(req.query.hasOwnProperty('min_created_time')) {
+        sql = sql.where('created_time', '>=', req.query['min_created_time']);
+    }
+    if(req.query.hasOwnProperty('max_created_time')) {
+        sql = sql.where('created_time', '<=', req.query['max_created_time']);
+    }
+    if(req.query.hasOwnProperty('min_modified_time')) {
+        sql = sql.where('modified_time', '>=', req.query['min_modified_time']);
+    }
+    if(req.query.hasOwnProperty('max_modified_time')) {
+        sql = sql.where('modified_time', '<=', req.query['max_modified_time']);
+    }
+
+    // limit & offset
+    if(req.query.hasOwnProperty('limit'))   sql = sql.limit(req.query['limit']);
+    if(req.query.hasOwnProperty('offset'))  sql = sql.offset(req.query['offset']);
+
+    sql.then((rows) => {
+        res.status(200).send(rows);
+    })
+    .catch((err) => {
         res.status(400).send(err);
-    });
+    })
 });
 
 /**

@@ -26,7 +26,8 @@ const getUsersQuery= {
         max_created_time: {type: 'string'},
         min_modified_time: {type: 'string'},
         max_modified_time: {type: 'string'},
-        limit: {type: 'number'}
+        limit: {type: 'number'},
+        offset: {type: 'number'}
     },
     additionalProperties: false
 };
