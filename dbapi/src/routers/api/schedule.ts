@@ -39,13 +39,14 @@ router.get('/', (req, res) => {
     let schedules = knex('schedule');
 
     for (let field in req.query) {
-        if (!(/_time$/.test(field))) {
-            schedules.where(field, req.query[field]);
+        if (/^max_/.test(field)) {
+            schedules.where(field.substr(4), '<=', req.query[field] || 'infinity');
+        }
+        else if (/^min_/.test(field)) {
+            schedules.where(field.substr(4), '>=', req.query[field] || '-infinity');
         }
         else {
-            let bounds = req.query[field];
-            schedules.whereBetween(field, [bounds[0] || '-infinity',
-            bounds[1] || 'infinity']);
+            schedules.where(field, req.query[field]);
         }
     }
 

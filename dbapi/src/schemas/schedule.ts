@@ -23,18 +23,10 @@ const getScheduleQuery = {
         include_eligbile: { type: 'boolean' },
         include_sponsor: { type: 'boolean' },
 
-        created_time: {
-            type: 'array',
-            items: { type: 'string' },
-            minItems: 2,
-            maxItems: 2
-        },
-        modified_time: {
-            type: 'array',
-            items: { type: 'string' },
-            minItems: 2,
-            maxItems: 2
-        },
+        max_created_time: { type: 'string' },
+        min_created_time: { type: 'string' },
+        max_modified_time: { type: 'string' },
+        min_modified_time: { type: 'string' },
 
         limit: {
             type: 'number',
