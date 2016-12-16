@@ -45,7 +45,6 @@
     "mocha": "^3.2.0",
     "npm-run-all": "^3.1.2",
     "should": "^11.1.2",
-    "tslint": "^4.0.2",
     "typescript": "^2.0.10",
     "watch": "^1.0.1"
   },
