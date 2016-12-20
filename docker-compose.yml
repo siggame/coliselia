@@ -21,6 +21,8 @@ services:
     build: dbapi/
     ports:
     - "3000:3000"
+    depends_on:
+    - db
 
   gitlab:
     build: gitlab/
