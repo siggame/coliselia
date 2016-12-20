@@ -21,11 +21,12 @@ services:
     build: dbapi/
     ports:
     - "3000:3000"
-    depends_on:
-    - db
 
   gitlab:
     build: gitlab/
+    environment:
+      GITLAB_POST_RECONFIGURE_SCRIPT: |
+        /tmp/flash-forward.sh
     ports:
     - "8080:80"
     - "8443:443"
