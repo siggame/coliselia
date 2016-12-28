@@ -1,14 +1,23 @@
-const getTeamsQuery= {
+const getTeamsQuery = {
     type: 'object',
     properties: {
-        id: { type: ['array', 'number', 'string'] },
+        id: {
+            type: ['array', 'number'],
+            items: { type: 'number' }
+        },
         name: {
             type: ['array', 'string'],
             items: { type: 'string' }
         },
-        gitlab_id: { type: ['array', 'string', 'number'] },
+        gitlab_id: {
+            type: ['array', 'number'],
+            items: { type: 'number' }
+        },
         members: { type: ['array', 'string', 'number'] },
-        prog_lang: { type: ['array', 'string'] },
+        prog_lang: {
+            type: ['array', 'string'],
+            items: { type: 'string' }
+        },
         competition: { type: ['array', 'string', 'number'] },
 
         is_paid: { type: 'boolean' },
@@ -26,7 +35,10 @@ const getTeamsQuery= {
         max_modified_time: { type: 'string' },
 
         offset: { type: ['number', 'string'] },
-        limit: { type: ['number', 'string'] }
+        limit: {
+            type: 'number',
+            minimum: 1
+        }
     },
     additionalProperties: false
 };
@@ -81,7 +93,7 @@ const updateTeamBody = {
 const updateTeamParams = {
     type: 'object',
     properties: {
-        id: { type: ['string', 'number'] },
+        id: { type: 'number' },
     },
     additionalProperties: false
 };
