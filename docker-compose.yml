@@ -24,6 +24,7 @@ services:
 
   gitlab:
     build: gitlab/
+    volumes-from: gitlab-data
     ports:
     - "8080:80"
     - "8443:443"
