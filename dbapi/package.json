@@ -6,19 +6,15 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "mocha --colors test/",
-
     "predocs": "npm run compile || true",
     "docs": "npm run docs:src && npm run docs:api",
     "docs:src": "jsdoc src/ --destination docs/src/",
     "docs:api": "apidoc --input src/ --output docs/api/",
-
     "compile": "npm-run-all compile:*",
     "compile:src": "tsc --project src",
     "compile:test": "tsc --project test",
-
     "watch:compile:src": "watch 'npm run compile:src' src/",
     "watch:compile:test": "watch 'npm run compile:test' test/",
-
     "presetup": "npm run clean && npm install",
     "setup": "npm-run-all setup:*",
     "setup:compile": "npm run compile",
@@ -45,7 +41,7 @@
     "mocha": "^3.2.0",
     "npm-run-all": "^3.1.2",
     "should": "^11.1.2",
-    "tslint": "^4.0.2",
+    "tslint": "^4.3.1",
     "typescript": "^2.0.10",
     "watch": "^1.0.1"
   },

@@ -65,7 +65,7 @@ CREATE TABLE "team" (
 
     competition integer REFERENCES "competition",
 
-    id_paid boolean NOT NULL DEFAULT false,
+    is_paid boolean NOT NULL DEFAULT false,
     paid_time timestamp,
     is_eligible boolean NOT NULL DEFAULT true,
 
