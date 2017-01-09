@@ -1,12 +1,12 @@
-import * as express from 'express';
-import * as Knex from 'knex';
-import * as _ from 'lodash';
-import * as winston from 'winston';
-import { Validator } from 'jsonschema';
-import { schedule as schemas } from '../../schemas';
+import * as express from "express";
+import { Validator } from "jsonschema";
+import * as Knex from "knex";
+import * as _ from "lodash";
+import * as winston from "winston";
+import { schedule as schemas } from "../../schemas";
 
 let knex = Knex({
-    client: 'pg',
+    client: "pg",
     connection: {
         database: process.env.DB_NAME,
         host: process.env.DB_HOST,
@@ -20,7 +20,7 @@ let v: Validator = new Validator();
 
 let router = express.Router();
 
-router.param('id', (req, res, next, id) => {
+router.param("id", (req, res, next, id) => {
     next();
 });
 
@@ -30,20 +30,20 @@ router.param('id', (req, res, next, id) => {
  * @apiGroup Schedule
  * @apiDescription Get schedule given by query params
  */
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
     let result = v.validate(req.query, schemas.getScheduleQuery);
     if (result.errors.length > 0) {
         return res.status(400).send({ error: result.errors[0] });
     }
 
-    let schedules = knex('schedule');
+    let schedules = knex("schedule");
 
     for (let field in req.query) {
         if (/^max_/.test(field)) {
-            schedules.where(field.substr(4), '<=', req.query[field] || 'infinity');
+            schedules.where(field.substr(4), "<=", req.query[field] || "infinity");
         }
         else if (/^min_/.test(field)) {
-            schedules.where(field.substr(4), '>=', req.query[field] || '-infinity');
+            schedules.where(field.substr(4), ">=", req.query[field] || "-infinity");
         }
         else {
             schedules.where(field, req.query[field]);
@@ -63,13 +63,13 @@ router.get('/', (req, res) => {
  * @apiGroup Schedule
  * @apiDescription Get schedule given by schedule id
  */
-router.get('/:id', (req, res) => {
+router.get("/:id", (req, res) => {
     let result = v.validate(req.params, schemas.getScheduleParams);
     if (result.errors.length > 0) {
         return res.status(400).send({ error: result.errors[0] });
     }
 
-    knex('schedule').where(req.params).then((schedule) => {
+    knex("schedule").where(req.params).then((schedule) => {
         if (schedule.length < 1) return res.status(404).send({ error: `Schedule with id ${req.params.id} not found` });
         res.status(200).send(schedule[0]);
     }).catch((err) => {
@@ -83,14 +83,14 @@ router.get('/:id', (req, res) => {
  * @apiGroup Schedule
  * @apiDescription Create schedule from request body
  */
-router.post('/', (req, res) => {
+router.post("/", (req, res) => {
     let result = v.validate(req.body, schemas.createSchedule);
     if (result.errors.length > 0) {
         return res.status(400).send({ error: result.errors[0] });
     }
 
-    knex('schedule').insert(req.body, '*').then((schedule) => {
-        if (schedule.length < 1) return res.status(404).send({ error: 'Schedule was not created' });
+    knex("schedule").insert(req.body, "*").then((schedule) => {
+        if (schedule.length < 1) return res.status(404).send({ error: "Schedule was not created" });
         res.status(200).send(schedule[0]);
     }).catch((err) => {
         res.status(400).send(err);
@@ -103,7 +103,7 @@ router.post('/', (req, res) => {
  * @apiGroup Schedule
  * @apiDescription Update schedule, by given schedule id, from body
  */
-router.post('/:id', (req, res) => {
+router.post("/:id", (req, res) => {
     let result = v.validate(req.params, schemas.getScheduleParams);
     if (result.errors.length > 0) {
         return res.status(400).send({ errors: result.errors[0] });
@@ -114,9 +114,9 @@ router.post('/:id', (req, res) => {
         return res.status(400).send({ errors: result.errors[0] });
     }
 
-    req.body['modified_time'] = 'now()'
+    req.body["modified_time"] = "now()";
 
-    knex('schedule').where(req.params).update(req.body, '*').then((schedule) => {
+    knex("schedule").where(req.params).update(req.body, "*").then((schedule) => {
         if (schedule.length < 1) return res.status(404).send({ error: `Schedule with id ${req.params.id} not found` });
         res.status(200).send(schedule[0]);
     }).catch((err) => {
@@ -130,13 +130,13 @@ router.post('/:id', (req, res) => {
  * @apiGroup Schedule
  * @apiDescription Get schedule data given by schedule id
  */
-router.get('/:id/data', (req, res) => {
+router.get("/:id/data", (req, res) => {
     let result = v.validate(req.params, schemas.getScheduleParams);
     if (result.errors.length > 0) {
         return res.status(400).send({ errors: result.errors[0] });
     }
 
-    knex('schedule').select('data').where(req.params).then((data) => {
+    knex("schedule").select("data").where(req.params).then((data) => {
         if (data.length < 1) return res.status(404).send({ error: `Schedule with id ${req.params.id} not found` });
         res.status(200).send(data[0]);
     }).catch((err) => {
@@ -150,7 +150,7 @@ router.get('/:id/data', (req, res) => {
  * @apiGroup Schedule
  * @apiDescription Set schedule data for schedule with matching id to body
  */
-router.post('/:id/data', (req, res) => {
+router.post("/:id/data", (req, res) => {
     let result = v.validate(req.params, schemas.getScheduleParams);
     if (result.errors.length > 0) {
         return res.status(400).send({ errors: result.errors[0] });
@@ -161,9 +161,9 @@ router.post('/:id/data', (req, res) => {
         return res.status(400).send({ errors: result.errors[0] });
     }
 
-    req.body['modified_time'] = 'now()'
+    req.body["modified_time"] = "now()";
 
-    knex('schedule').where(req.params).update(req.body, '*').then((schedule) => {
+    knex("schedule").where(req.params).update(req.body, "*").then((schedule) => {
         if (schedule.length < 1) return res.status(404).send({ error: `Schedule with id ${req.params.id} not found` });
         res.status(200).send(schedule[0]);
     }).catch((err) => {
@@ -177,15 +177,15 @@ router.post('/:id/data', (req, res) => {
  * @apiGroup Schedule
  * @apiDescription Get schedule result from schedule given by schedule id
  */
-router.get('/:id/result', (req, res) => {
+router.get("/:id/result", (req, res) => {
     let result = v.validate(req.params, schemas.getScheduleParams);
     if (result.errors.length > 0) {
         return res.status(400).send({ errors: result.errors[0] });
     }
 
-    knex('schedule').select('result').where(req.params).then((result) => {
+    knex("schedule").select("result").where(req.params).then((result) => {
         if (result.length < 1) return res.status(404).send({
-            error: `Schedule with id ${req.params.id} not found`
+            error: `Schedule with id ${req.params.id} not found`,
         });
         res.status(200).send(result[0]);
     }).catch((err) => {
@@ -199,7 +199,7 @@ router.get('/:id/result', (req, res) => {
  * @apiGroup Schedule
  * @apiDescription Set schedule result for schedule matching id with body
  */
-router.post('/:id/result', (req, res) => {
+router.post("/:id/result", (req, res) => {
     let result = v.validate(req.params, schemas.getScheduleParams);
     if (result.errors.length > 0) {
         return res.status(400).send({ errors: result.errors[0] });
@@ -210,9 +210,9 @@ router.post('/:id/result', (req, res) => {
         return res.status(400).send({ errors: result.errors[0] });
     }
 
-    req.body['modified_time'] = 'now()'
+    req.body["modified_time"] = "now()";
 
-    knex('schedule').where(req.params).update(req.body, '*').then((schedule) => {
+    knex("schedule").where(req.params).update(req.body, "*").then((schedule) => {
         if (schedule.length < 1) return res.status(404).send({ error: `Schedule with id ${req.params.id} not found` });
         res.status(200).send(schedule[0]);
     }).catch((err) => {

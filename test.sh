@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 YML=${1:-'docker-compose.yml'}
 echo "Using ${YML}"
