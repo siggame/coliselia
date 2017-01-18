@@ -1,4 +1,4 @@
-# coliselia
+# Coliselia
 
 [![Build Status](https://travis-ci.org/siggame/coliselia.svg?branch=master)](https://travis-ci.org/siggame/coliselia) 
 
