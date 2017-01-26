@@ -9,8 +9,8 @@
 2) Install Docker Compose - https://docs.docker.com/compose/install/  
 `pip install docker-compose`  
 
-3) Run `npm install` on each service using installAll script  
-`./installAll.sh`  
+3) Run `npm install` on each service using setupAll script  
+`./setupAll.sh`  
 
 ### Run coliselia  
 4) Build images  
